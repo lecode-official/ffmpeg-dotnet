@@ -13,7 +13,7 @@ namespace System.Media.FFMpeg.Interop
 	/// <summary>
 	/// Represents a simple PInvoke wrapper aroung the libavcodec library of the FFMpeg project.
 	/// </summary>
-    public class AvCodec
+    public class AVCodec
     {
         #region Public Methods
         
