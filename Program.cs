@@ -6,7 +6,7 @@ namespace System.Media.FFMpeg.Interop
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine(AvCodec.avcodec_version().ToString());
+            Console.WriteLine(AVCodec.avcodec_version().ToString());
         }
     }
 }

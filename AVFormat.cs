@@ -5,7 +5,7 @@
 
 namespace System.Media.FFMpeg.Interop
 {
-    public class AvFormat
+    public class AVFormat
     {
     }
 }
