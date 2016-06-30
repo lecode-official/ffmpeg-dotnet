@@ -1,10 +1,7 @@
 
 #region Using Directives
 
-using System;
-using System.Runtime;
 using System.Runtime.InteropServices;
-using System.Security;
 
 #endregion
 
@@ -17,6 +14,10 @@ namespace System.Media.FFMpeg.Interop
     {
         #region Public Methods
         
+        /// <summary>
+        /// Retrieves the version of the libavcodec library.
+        /// </summary>
+        /// <returns>Returns the version of the libavcodec library.</returns>
         [DllImport("libavcodec.so")]
         public static extern uint avcodec_version();
         
