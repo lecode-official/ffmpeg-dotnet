@@ -25,13 +25,19 @@ namespace System.Media.FFMpeg.Interop
 
             // Loads a video
             IntPtr formatContextPointer;
-            AVFormat.avformat_open_input(out formatContextPointer, "/home/david/Downloads/big_buck_bunny_1080p_stereo.ogg", IntPtr.Zero, IntPtr.Zero);
-            AVFormatContext formatContext = Marshal.PtrToStructure<AVFormatContext>(formatContextPointer);
-            Console.WriteLine("Opened video");
+            if (AVFormat.avformat_open_input(out formatContextPointer, "/home/david/Downloads/big_buck_bunny_1080p_stereo.ogg", IntPtr.Zero, IntPtr.Zero) != 0)
+            {
+                Console.WriteLine("An error occurred while opening the video.");
+            }
+            else
+            {
+                AVFormatContext formatContext = Marshal.PtrToStructure<AVFormatContext>(formatContextPointer);
+                Console.WriteLine("Opened video");
 
-            // Closes the video again
-            AVFormat.avformat_close_input(formatContextPointer);
-            Console.WriteLine("Closed video again");
+                // Closes the video again
+                AVFormat.avformat_close_input(formatContextPointer);
+                Console.WriteLine("Closed video again");
+            }
 
             // Waits for the user to press a key, before the application is exited
             Console.Write("Press any key to exit...");
