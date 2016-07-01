@@ -1,4 +1,10 @@
 ﻿
+#region Using Directives
+
+using System.Runtime.InteropServices;
+
+#endregion
+
 namespace System.Media.FFMpeg.Interop
 {
     /// <summary>
@@ -14,8 +20,18 @@ namespace System.Media.FFMpeg.Interop
         /// <param name="args">The command line arguments, that were passed to the application.</param>
         public static void Main(string[] args)
         {
-            // Prints out the version of libavcoded that is installed on the system
-            Console.WriteLine(AVCodec.avcodec_version().ToString());
+            // Initializes the Codecs and formats
+            AVFormat.av_register_all();
+
+            // Loads a video
+            IntPtr formatContextPointer;
+            AVFormat.avformat_open_input(out formatContextPointer, "/home/david/Downloads/big_buck_bunny_1080p_stereo.ogg", IntPtr.Zero, IntPtr.Zero);
+            AVFormatContext formatContext = Marshal.PtrToStructure<AVFormatContext>(formatContextPointer);
+            Console.WriteLine("Opened video");
+
+            // Closes the video again
+            AVFormat.avformat_close_input(formatContextPointer);
+            Console.WriteLine("Closed video again");
 
             // Waits for the user to press a key, before the application is exited
             Console.Write("Press any key to exit...");
