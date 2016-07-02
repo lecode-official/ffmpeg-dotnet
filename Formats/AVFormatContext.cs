@@ -203,6 +203,83 @@ namespace System.Media.FFmpeg.Interop.Formats
         /// </summary>
         public int error_recognition;
 
+        /// <summary>
+        /// Contains the custom interrupt callbacks for the I/O layer. When demuxing this is set by the usre before avformat_open_input(). When muxing this is
+        /// set by the user before avformat_write_header() (mainly useful for AVFMT_NOFILE formats). The callback should also be passed to avio_open2() if it's
+        /// used to open the file.
+        /// </summary>
+        public AVIOInterruptCB interrupt_callback;
+
+        /// <summary>
+        /// Contains the flags for enabling debugging.
+        /// </summary>
+        public int debug;
+
+        /// <summary>
+        /// Conatins the maximum buffering duration for interleaving. To ensure all the streams are interleaved correctly, av_interleaved_write_frame() will
+        /// wait until it has at least one packet for each stream before actually writing any packets to the output file. When some streams are "sparse" (i.e.
+        /// there are large gaps between successive packets), this can result in excessive buffering. This field specifies the maximum difference between the
+        /// timestamps of the first and the last packet in the muxing queue, above which libavformat will output a packet regardless of whether it has queued
+        /// a packet for all the streams. This is for muxing only and is set by the caller before avformat_write_header().
+        /// </summary>
+        public long max_interleave_delta;
+
+        /// <summary>
+        /// Contains a value that allows non-standard and experimental extension.
+        /// </summary>
+        public int strict_std_compliance;
+
+        /// <summary>
+        /// Contains flags for the user to detect events happening on the file. Flags must be cleared by the user once the event has been handled.
+        /// </summary>
+        public int event_flags;
+
+        /// <summary>
+        /// Contains the maximum number of packets to read while waiting for the first timestamp. This is for decoding only.
+        /// </summary>
+        public int max_ts_probe;
+
+        /// <summary>
+        /// Contains a value that determines wheter negative timestamps are avoided during muxing. Any value of the AVFMT_AVOID_NEG_TS_* constants. Note, this
+        /// only works when using av_interleaved_write_frame. (interleave_packet_per_dts is in use). This is only used for muxing and set by the user.
+        /// </summary>
+        public int avoid_negative_ts;
+
+        /// <summary>
+        /// Contains the transport stream ID. This will be moved into demuxer private options. Thus no API/ABI compatibility.
+        /// </summary>
+        public int ts_id;
+
+        /// <summary>
+        /// Contains the audio preload in microseconds. Note, not all formats support this and unpredictable things may happen if it is used when not supported.
+        /// When encoding this is set by the user via <see cref="AVOptions"/> (no direct access). When decoding this is not used.
+        /// </summary>
+        public int audio_preload;
+
+        /// <summary>
+        /// Contains the maximum chunk time in microseconds. Note, not all formats support this and unpredictable things may happen if it is used when not
+        /// supported. When encoding this is set by the user via <see cref="AVOptions"/> (no direct access). When decoding this is not used.
+        /// </summary>
+        public int max_chunk_duration;
+
+        /// <summary>
+        /// Contains the maximum chunk size in bytes. Note, not all formats support this and unpredictable things may happen if it is used when not supported.
+        /// When encoding this is set by the user via <see cref="AVOptions"/> (no direct access). When decoding this is not used.
+        /// </summary>
+        public int max_chunk_size;
+
+        /// <summary>
+        /// Contains a value that forces the use of wallclock timestamps as pts/dts of packets. This has undefined results in the presence of B frames. When
+        /// encoding this is unused. When decoding this is set by the user via <see cref="AVOptions"/> (no direct access).
+        /// </summary>
+        public int use_wallclock_as_timestamps;
+
+        /// <summary>
+        /// Contains the avio flags, used to force AVIO_FLAG_DIRECT. When encoding this is unused. When decoding this  is set by the user via
+        /// <see cref="AVOptions"/> (no direct access).
+        /// </summary>
+        public int avio_flags;
+
         #endregion
     }
 }
