@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 
 #endregion
 
-namespace System.Media.FFMpeg.Interop
+namespace System.Media.FFmpeg.Interop
 {
     /// <summary>
-    /// Represents the entry-point to the FFMpeg.NET sample application.
+    /// Represents the entry-point to the FFmpeg.NET sample application.
     /// </summary>
     public class Program
     {

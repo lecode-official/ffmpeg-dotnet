@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 
 #endregion
 
-namespace System.Media.FFMpeg.Interop
+namespace System.Media.FFmpeg.Interop
 {
 	/// <summary>
-	/// Represents a simple PInvoke wrapper aroung the libavformat library of the FFMpeg project.
+	/// Represents a simple PInvoke wrapper aroung the libavformat library of the FFmpeg project.
 	/// </summary>
     public class AVFormat
     {
