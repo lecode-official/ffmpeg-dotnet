@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 #endregion
 
-namespace System.Media.FFMpeg.Interop
+namespace System.Media.FFmpeg.Interop
 {
     /// <summary>
     /// Represents the format I/O context.
