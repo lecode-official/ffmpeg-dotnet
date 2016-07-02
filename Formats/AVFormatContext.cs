@@ -57,19 +57,18 @@ namespace System.Media.FFmpeg.Interop.Formats
         public uint nb_streams;
 
         /// <summary>
-        /// Contains a list of all streams in the file. New streams are created with avformat_new_stream(). When demuxing the streams are created by
-        /// libavformat in avformat_open_input(). If AVFMTCTX_NOHEADER is set in ctx_flags, then new streams may also appear in av_read_frame(). When muxing
-        /// the streams are created by the user before avformat_write_header(). Freed by libavformat in avformat_free_context().
+        /// Contains a pointer to an array of pointers of all streams in the file. New streams are created with avformat_new_stream(). When demuxing the
+        /// streams are created by libavformat in avformat_open_input(). If AVFMTCTX_NOHEADER is set in ctx_flags, then new streams may also appear in
+        /// av_read_frame(). When muxing the streams are created by the user before avformat_write_header(). Freed by libavformat in avformat_free_context().
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
-        public IntPtr[] streams;
+        public IntPtr streams;
 
         /// <summary>
         /// Contains the input or output file name. When demuxing the file name is set by avformat_open_input(). When muxing the file name may be set byt the
         /// caller before avformat_write_header().
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
-        public byte[] filename;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
+        public string filename;
 
         /// <summary>
         /// Contains the position of the first frame of the component, in AV_TIME_BASE fractional seconds. NEVER set this value directly: It is deduced from

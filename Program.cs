@@ -33,7 +33,7 @@ namespace System.Media.FFmpeg.Interop
             else
             {
                 AVFormatContext formatContext = Marshal.PtrToStructure<AVFormatContext>(formatContextPointer);
-                Console.WriteLine("Opened video");
+                Console.WriteLine($"Opened video: {formatContext.filename}");
 
                 // Closes the video again
                 AVFormat.avformat_close_input(formatContextPointer);
