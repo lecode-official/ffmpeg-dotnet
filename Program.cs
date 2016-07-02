@@ -1,6 +1,7 @@
 ﻿
 #region Using Directives
 
+using System.Media.FFmpeg.Interop.Formats;
 using System.Runtime.InteropServices;
 
 #endregion
