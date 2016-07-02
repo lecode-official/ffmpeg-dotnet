@@ -37,7 +37,7 @@ namespace System.Media.FFmpeg.Interop
 
                 // Closes the video again
                 AVFormat.avformat_close_input(formatContextPointer);
-                Console.WriteLine("Closed video again");
+                Console.WriteLine("Closed video");
             }
 
             // Waits for the user to press a key, before the application is exited
