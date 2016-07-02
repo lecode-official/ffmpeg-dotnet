@@ -18,7 +18,7 @@ namespace System.Media.FFMpeg.Interop
         /// Retrieves the version of the libavcodec library.
         /// </summary>
         /// <returns>Returns the version of the libavcodec library.</returns>
-        [DllImport("libavcodec.so")]
+        [DllImport("libavcodec.so.57")]
         public static extern uint avcodec_version();
         
         #endregion 
