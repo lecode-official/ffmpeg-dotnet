@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 #endregion
 
-namespace System.Media.FFmpeg.Interop
+namespace System.Media.FFmpeg.Interop.Codecs
 {
 	/// <summary>
 	/// Represents a simple PInvoke wrapper aroung the libavcodec library of the FFmpeg project.
