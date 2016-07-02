@@ -1,6 +1,7 @@
 
 #region Using Directives
 
+using System.Media.FFmpeg.Interop.Codecs;
 using System.Runtime.InteropServices;
 
 #endregion
@@ -135,6 +136,72 @@ namespace System.Media.FFmpeg.Interop.Formats
         /// Contains a pointer to an array of pointers to the programs.
         /// </summary>
         public IntPtr programs;
+
+        /// <summary>
+        /// Contains forced video codec ID. For demuxing this is set by the user.
+        /// </summary>
+        public AVCodecID video_codec_id;
+
+        /// <summary>
+        /// Contains forced audio codec ID. For demuxing this is set by the user.
+        /// </summary>
+        public AVCodecID audio_codec_id;
+
+        /// <summary>
+        /// Contains forced subtitle codec ID. For demuxing this is set by the user.
+        /// </summary>
+        public AVCodecID subtitle_codec_id;
+
+        /// <summary>
+        /// Contains the maximum amount of memory in bytes to use for the index of each stream. If the index exceeds this size, entries will be discarded as
+        /// needed to maintain a smaller size. This can lead to slower or less accurate seeking (depends on demuxer). Demuxers for which a full in-memory index
+        /// is mandatory will ignore this. When muxing this is unused and when demuxnig this is set by the user.
+        /// </summary>
+        public uint max_index_size;
+
+        /// <summary>
+        /// Contains the maximum amount of memory in bytes to use for buffering frames obtained from realtime capture devices.
+        /// </summary>
+        public uint max_picture_buffer;
+
+        /// <summary>
+        /// Contains the number of chapters in AVChapter array. When muxing, chapters are normally written in the file header, so nb_chapters should normally be
+        /// initialized before write_header is called. Some muxers (e.g. mov and mkv) can also write chapters in the trailer.  To write chapters in the trailer,
+        /// nb_chapters must be zero when write_header is called and non-zero when write_trailer is called. When muxing this is set by the user and when demuxing
+        /// this is set by libavformat.
+        /// </summary>
+        public uint nb_chapters;
+
+        /// <summary>
+        /// Contains a pointer to an array of pointers of <see cref="AVChapter"/> chapters.
+        /// </summary>
+        public IntPtr chapters;
+
+        /// <summary>
+        /// Contains the metadata that applies to the whole file. When demuxing this is set by libavformat in avformat_open_input(). When muxing this may be set
+        /// by the caller before avformat_write_header(). Freed by libavformat in avformat_free_context().
+        /// </summary>
+        public IntPtr metadata;
+
+        /// <summary>
+        /// Contains the start time of the stream in real world time, in microseconds since the Unix epoch (00:00 1st January 1970). That is, pts=0 in the stream
+        /// was captured at this real world time. When muxing this is set by the caller before avformat_write_header(). If set to either 0 or AV_NOPTS_VALUE, then
+        /// the current wall-time will be used. When demuxing this is set by libavformat. AV_NOPTS_VALUE if unknown. Note that the value may become known after
+        /// some number of frames have been received.
+        /// </summary>
+        public long start_time_realtime;
+
+        /// <summary>
+        /// Contains the number of frames used for determining the framerate in avformat_find_stream_info(). This is for demuxing only and is set by the caller
+        /// before avformat_find_stream_info().
+        /// </summary>
+        public int fps_probe_size;
+
+        /// <summary>
+        /// Conatins a value that determines how many errors are being detected. Higher values will detect more errors but may misdetect some more or less valid
+        /// parts as errors. This is for demuxing only and is set by the caller before avformat_open_input().
+        /// </summary>
+        public int error_recognition;
 
         #endregion
     }
