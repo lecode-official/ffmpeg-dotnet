@@ -280,6 +280,12 @@ namespace System.Media.FFmpeg.Interop.Formats
         /// </summary>
         public int avio_flags;
 
+        /// <summary>
+        /// The duration field can be estimated through various ways, and this field can be used to know how the duration was estimated. When encoding this
+        /// is unused. When decoding this can be erad by the user via AVOptions (no direct access).
+        /// </summary>
+        public AVDurationEstimationMethod duration_estimation_method;
+
         #endregion
     }
 }
