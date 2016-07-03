@@ -1,12 +1,13 @@
 
 #region Using Directives
 
-using System.Media.FFmpeg.Interop.Codecs;
+using FFmpeg.Codecs;
+using System;
 using System.Runtime.InteropServices;
 
 #endregion
 
-namespace System.Media.FFmpeg.Interop.Formats
+namespace FFmpeg.Formats
 {
     /// <summary>
     /// Represents the format I/O context.

@@ -1,5 +1,5 @@
 
-namespace System.Media.FFmpeg.Interop.Formats
+namespace FFmpeg.Formats
 {
     /// <summary>
     /// The duration of a video can be estimated through various ways, and this enum can be used to know how the duration was estimated.
