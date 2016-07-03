@@ -46,6 +46,20 @@ namespace FFmpeg.Formats
         [DllImport(Libraries.AVFormat)]
         public static extern void avformat_close_input(IntPtr s);
 
+        /// <summary>
+        /// Read packets of a media file to get stream information. This is useful for file formats with no headers such as MPEG. This function also computes the
+        /// real framerate in case of MPEG-2 repeat frame mode. The logical file position is not changed by this function; examined packets may be buffered for
+        /// later processing. Note, this function isn't guaranteed to open all the codecs, so options being non-empty at return is a perfectly normal behavior.
+        /// </summary>
+        /// <param name="ic">The <see cref="AVFormatContext"/> media file handle.</param>
+        /// <param name="options">
+        /// If non-<c>null</c>, an ic.nb_streams long array of pointers to dictionaries, where i-th member contains options for codec corresponding to i-th stream.
+        /// On return each dictionary will be filled with options that were not found.
+        /// </param>
+        /// <returns>Returns a value greater than or equal to 0 when everything went alright and a negative number otherwise.</returns>
+        [DllImport(Libraries.AVFormat)]
+        public static extern int avformat_find_stream_info(IntPtr ic, IntPtr options);
+
         #endregion
     }
 }
