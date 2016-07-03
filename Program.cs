@@ -91,8 +91,34 @@ namespace FFmpeg
             int numBytes = LibAVCodec.avpicture_get_size(AVPixelFormat.AV_PIX_FMT_RGB24, videoCodecContext.width, videoCodecContext.height);
             IntPtr buffer = LibAVUtil.av_malloc(new UIntPtr((uint)(numBytes * sizeof(byte))));
 
-            IntPtr sws_ctx = LibSwScale.sws_getContext(videoCodecContext.width, videoCodecContext.height, videoCodecContext.pix_fmt, videoCodecContext.width,
-                videoCodecContext.height, AVPixelFormat.AV_PIX_FMT_RGB24, ScalingFlags.SWS_BILINEAR, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+            // Assigns appropriate parts of buffer to image planes in frameRgb, note that frameRgb is an AVFrame, but AVFrame is a superset of AVPicture
+            LibAVCodec.avpicture_fill(frameRgb, buffer, AVPixelFormat.AV_PIX_FMT_RGB24, videoCodecContext.width, videoCodecContext.height);
+
+            IntPtr packetPointer;
+            while (LibAVFormat.av_read_frame(formatContextPointer, out packetPointer) >= 0)
+            {
+                AVPacket packet = Marshal.PtrToStructure<AVPacket>(packetPointer);
+                if (packet.stream_index == videoStreamId)
+                {
+                    // Decode video frame
+                    int frameFinished = 0;
+                    LibAVCodec.avcodec_decode_video2(videoStream.codec, frame, ref frameFinished, packetPointer);
+                    
+                    // Did we get a video frame?
+                    if (frameFinished == 0)
+                    {
+                        // Convert the image from its native format to RGB
+                        IntPtr sws_ctx = LibSwScale.sws_getContext(videoCodecContext.width, videoCodecContext.height, videoCodecContext.pix_fmt,
+                            videoCodecContext.width, videoCodecContext.height, AVPixelFormat.AV_PIX_FMT_RGB24, ScalingFlags.SWS_BILINEAR, IntPtr.Zero,
+                            IntPtr.Zero, IntPtr.Zero);
+                        //sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameRGB->data, pFrameRGB->linesize);
+                        //SaveFrame(pFrameRGB, pCodecCtx->width, pCodecCtx->height, i);
+                    }
+                }
+                
+                // Frees the packet that was allocated by av_read_frame
+                LibAVCodec.av_free_packet(packetPointer);
+            }
 
             // Frees and closes all acquired resources
             LibAVUtil.av_free(buffer);

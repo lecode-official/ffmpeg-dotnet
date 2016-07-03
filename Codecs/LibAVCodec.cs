@@ -71,6 +71,48 @@ namespace FFmpeg.Codecs
         [DllImport(Libraries.AVCodec)]
         public static extern int avpicture_get_size(AVPixelFormat pix_fmt, int width, int height);
 
+        /// <summary>
+        /// Fills the picture.
+        /// </summary>
+        /// <param name="picture">The picture.</param>
+        /// <param name="ptr">A pointer to the buffer.</param>
+        /// <param name="pix_fmt">The pixel format.</param>
+        /// <param name="width">The width of the picture.</param>
+        /// <param name="height">the height of the picture.</param>
+        /// <returns></returns>
+        [DllImport(Libraries.AVCodec)]
+        public static extern int avpicture_fill(IntPtr picture, IntPtr ptr, AVPixelFormat pix_fmt, int width, int height);
+
+        /// <summary>
+        /// Fress a packet.
+        /// </summary>
+        /// <param name="pkt">A pointer to the <see cref="AVPacket"/> that is to be freed.</param>
+        [DllImport(Libraries.AVCodec)]
+        public static extern void av_free_packet(IntPtr pkt);
+
+        /// <summary>
+        /// Decodes the video frame of size avpkt->size from avpkt->data into picture. Some decoders may support multiple frames in a single AVPacket, such
+        /// decoders would then just decode the first frame. Note, codecs which have the AV_CODEC_CAP_DELAY capability set have a delay between input and
+        /// output, these need to be fed with avpkt->data=NULL, avpkt->size=0 at the end to return the remaining frames.
+        /// </summary>
+        /// <param name="avctx">A pointer to the <see cref="AVCodecContext"/>.</param>
+        /// <param name="picture">
+        /// The <see cref="AVFrame"/> in which the decoded video frame will be stored. Use av_frame_alloc() to get an AVFrame. The codec will allocate memory
+        /// for the actual bitmap by calling the AVCodecContext.get_buffer2() callback. When AVCodecContext.refcounted_frames is set to 1, the frame is
+        /// reference counted and the returned reference belongs to the caller. The caller must release the frame using av_frame_unref() when the frame is
+        /// no longer needed. The caller may safely write to the frame if av_frame_is_writable() returns 1. When AVCodecContext.refcounted_frames is set to
+        /// 0, the returned reference belongs to the decoder and is valid only until the next call to this function or until closing or flushing the decoder.
+        /// The caller may not write to it.
+        /// </param>
+        /// <param name="got_picture_ptr">Zero if no frame could be decompressed, otherwise, it is nonzero.</param>
+        /// <param name="avpkt">
+        /// The input AVPacket containing the input buffer. You can create such packet with av_init_packet() and by then setting data and size, some decoders
+        /// might in addition need other fields like flags & AV_PKT_FLAG_KEY. All decoders are designed to use the least fields possible.
+        /// </param>
+        /// <returns>Returns the number of byets used or zero if no frame could be decompressed. On error a negative value is returned.</returns>
+        [DllImport(Libraries.AVCodec)]
+        public static extern int avcodec_decode_video2(IntPtr avctx, IntPtr picture, ref int got_picture_ptr, IntPtr avpkt);
+
         #endregion 
     }
 }
