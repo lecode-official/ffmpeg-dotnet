@@ -125,6 +125,63 @@ namespace FFmpeg.Codecs
         /// </summary>
         public int extradata_size;
 
+        /// <summary>
+        /// Contains the fundamental unit of time (in seconds) in terms of which frame timestamps are represented. For fixed-fps content, timebase should be
+        /// 1/framerate and timestamp increments should be identically 1. This often, but not always is the inverse of the frame rate or field rate for video.
+        /// 1/time_base is not the average frame rate if the frame rate is not constant. Like containers, elementary streams also can store timestamps,
+        /// 1/time_base is the unit in which these timestamps are specified. As example of such codec time base see ISO/IEC 14496-2:2001(E)
+        /// vop_time_increment_resolution and fixed_vop_rate (fixed_vop_rate == 0 implies that it is different from the framerate). When encoding it MUST be
+        /// set by the user. When decoding the use of this field for decoding is deprecated. Use framerate instead.
+        /// </summary>
+        public AVRational time_base;
+
+        /// <summary>
+        /// Contains the ticks per frame. For some codecs, the time base is closer to the field rate than the frame rate. Most notably, H.264 and MPEG-2
+        /// specify time_base as half of frame duration if no telecine is used. Set to time_base ticks per frame. Default 1, e.g., H.264/MPEG-2 set it to 2.
+        /// </summary>
+        public int ticks_per_frame;
+
+        /// <summary>
+        /// Contains the codec delay. When encoding the number of frames delay there will be from the encoder input to the decoder output. (we assume the
+        /// decoder matches the spec). When decoding the number of frames delay in addition to what a standard decoder as specified in the spec would produce.
+        /// For videos the number of frames the decoded output will be delayed relative to the encoded input. For audio encoding this field is unused (see
+        /// initial_padding). For audio decoding, this is the number of samples the decoder needs to output before the decoder's output is valid. When
+        /// seeking, you should start decoding this many samples prior to your desired seek point.
+        /// </summary>
+        public int delay;
+
+        /// <summary>
+        /// Contains the width of the video (this is for video only). Note, this field may not match the values of the last <see cref="AVFrame"/> output by
+        /// avcodec_decode_video2 due frame reordering. For encoding this MUST be set by the user. For decoding this may be set by the user before opening
+        /// the decoder if known e.g. from the container. Some decoders will require the dimensions to be set by the caller. During decoding, the decoder may
+        /// overwrite those values as required while parsing the data.
+        /// </summary>
+        public int width;
+        
+        /// <summary>
+        /// Contains the height of the video (this is for video only). Note, this field may not match the values of the last <see cref="AVFrame"/> output by
+        /// avcodec_decode_video2 due frame reordering. For encoding this MUST be set by the user. For decoding this may be set by the user before opening
+        /// the decoder if known e.g. from the container. Some decoders will require the dimensions to be set by the caller. During decoding, the decoder may
+        /// overwrite those values as required while parsing the data.
+        /// </summary>
+        public int height;
+
+        /// <summary>
+        /// Contains the bitstream width. This may be different from width e.g. when the decoded frame is cropped before being output or lowres is
+        /// enabled. Note, this field may not match the value of the last <see cref="AVFrame"/> output by avcodec_receive_frame() due frame reordering. This
+        /// is unused when encoding. When decoding this may be set by the user before opening the decoder if known e.g. from the container. During decoding,
+        /// the decoder may overwrite those values as required while parsing the data.
+        /// </summary>
+        public int coded_width;
+        
+        /// <summary>
+        /// Contains the bitstream height. This may be different from height e.g. when the decoded frame is cropped before being output or lowres is
+        /// enabled. Note, this field may not match the value of the last <see cref="AVFrame"/> output by avcodec_receive_frame() due frame reordering. This
+        /// is unused when encoding. When decoding this may be set by the user before opening the decoder if known e.g. from the container. During decoding,
+        /// the decoder may overwrite those values as required while parsing the data.
+        /// </summary>
+        public int coded_height;
+
         #endregion
     }
 }
