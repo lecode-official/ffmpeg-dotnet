@@ -6,6 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using FFmpeg.Codecs;
 using FFmpeg.Utilities;
+using FFmpeg.Scaling;
 
 #endregion
 
@@ -89,6 +90,9 @@ namespace FFmpeg
             // Determines the required buffer size and allocates the buffer for the RGB frame
             int numBytes = LibAVCodec.avpicture_get_size(AVPixelFormat.AV_PIX_FMT_RGB24, videoCodecContext.width, videoCodecContext.height);
             IntPtr buffer = LibAVUtil.av_malloc(new UIntPtr((uint)(numBytes * sizeof(byte))));
+
+            IntPtr sws_ctx = LibSwScale.sws_getContext(videoCodecContext.width, videoCodecContext.height, videoCodecContext.pix_fmt, videoCodecContext.width,
+                videoCodecContext.height, AVPixelFormat.AV_PIX_FMT_RGB24, ScalingFlags.SWS_BILINEAR, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 
             // Frees and closes all acquired resources
             LibAVUtil.av_free(buffer);
