@@ -86,7 +86,12 @@ namespace FFmpeg
             IntPtr frame = LibAVUtil.av_frame_alloc();
             IntPtr frameRgb = LibAVUtil.av_frame_alloc();
 
+            // Determines the required buffer size and allocates the buffer for the RGB frame
+            int numBytes = LibAVCodec.avpicture_get_size(AVPixelFormat.AV_PIX_FMT_RGB24, videoCodecContext.width, videoCodecContext.height);
+            IntPtr buffer = LibAVUtil.av_malloc(new UIntPtr((uint)(numBytes * sizeof(byte))));
+
             // Frees and closes all acquired resources
+            LibAVUtil.av_free(buffer);
             LibAVUtil.av_free(frameRgb);
             LibAVUtil.av_free(frame);
             LibAVCodec.avcodec_close(videoStream.codec);

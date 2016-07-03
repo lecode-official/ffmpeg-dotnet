@@ -31,6 +31,14 @@ namespace FFmpeg.Utilities
         [DllImport(Libraries.AVUtil)]
         public static extern void av_free(IntPtr ptr);
 
+        /// <summary>
+        /// Allocate a block of size bytes with alignment suitable for all memory accesses (including vectors if available on the CPU).
+        /// </summary>
+        /// <param name="size">The size in bytes for the memory block to be allocated.</param>
+        /// <returns>Returns a pointer to the allocated block, <c>IntPtr.Zero</c> if the block cannot be allocated.</returns>
+        [DllImport(Libraries.AVUtil)]
+        public static extern IntPtr av_malloc(UIntPtr size);
+
         #endregion
     }
 }

@@ -3,6 +3,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using FFmpeg.Utilities;
 
 #endregion
 
@@ -21,13 +22,6 @@ namespace FFmpeg.Codecs
         /// <returns>Returns the version of the libavcodec library.</returns>
         [DllImport(Libraries.AVCodec)]
         public static extern uint avcodec_version();
-
-        /**
-        * Find a registered decoder with a matching codec ID.
-        *
-        * @param id AVCodecID of the requested decoder
-        * @return A decoder if one was found, NULL otherwise.
-        */
 
         /// <summary>
         /// Finds a registered decoder with a matching codec ID.
@@ -66,6 +60,16 @@ namespace FFmpeg.Codecs
         /// <returns>Returns 0 if succesful and a negative value otherwise.</returns>
         [DllImport(Libraries.AVCodec)]
         public static extern int avcodec_close(IntPtr avctx);
+
+        /// <summary>
+        /// Gets the size of a picture given its resolution and pixel format.
+        /// </summary>
+        /// <param name="pix_fmt">The pixel format of the picture.</param>
+        /// <param name="width">The width of the picture.</param>
+        /// <param name="height">the height of the picture.</param>
+        /// <returns>Returns the size of the picture in bytes.</returns>
+        [DllImport(Libraries.AVCodec)]
+        public static extern int avpicture_get_size(AVPixelFormat pix_fmt, int width, int height);
 
         #endregion 
     }
