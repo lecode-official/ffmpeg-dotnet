@@ -51,6 +51,7 @@ namespace FFmpeg
             {
                 AVStream stream = Marshal.PtrToStructure<AVStream>(formatContext.streams);
                 AVCodecContext codecContext = Marshal.PtrToStructure<AVCodecContext>(stream.codec);
+                Console.WriteLine(codecContext.codec_type);
             }
 
             // Closes the video again
