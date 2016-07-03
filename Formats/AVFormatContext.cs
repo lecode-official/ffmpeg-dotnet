@@ -286,6 +286,42 @@ namespace System.Media.FFmpeg.Interop.Formats
         /// </summary>
         public AVDurationEstimationMethod duration_estimation_method;
 
+        /// <summary>
+        /// Contains the number of bytes that are skipped initially when opening a stream. When encoding this is not used. When decoding this is set by the
+        /// user via AVOptions (no direct access).
+        /// </summary>
+    	public long skip_initial_bytes;
+
+        /// <summary>
+        /// Contains a value for correcting single timestamp overflows. When enocding this is not used. When decoding this is set by the user via AVOptions
+        /// (no direct access).
+        /// </summary>
+        public uint correct_ts_overflow;
+
+        /// <summary>
+        /// Contains a value to force seeking to any (also non key) frames. This is not used when encoding. When decoding this is set by the user via
+        /// AVOptions (no direct access).
+        /// </summary>
+        public int seek2any;
+
+        /// <summary>
+        /// Contains a value for flushing the I/O context after each packet. When encodnig this is set by the user via AVOptions (no direct access). This is
+        /// not used when decoding.
+        /// </summary>
+        public int flush_packets;
+
+        /// <summary>
+        /// Contains the format probing score. The maximal score is AVPROBE_SCORE_MAX, its set when the demuxer probes the format. When encoding it is
+        /// unused. When decoding it is set by avformat and can be read by the user via av_format_get_probe_score() (no direct access).
+        /// </summary>
+        public int probe_score;
+
+        /// <summary>
+        /// Contains the number of bytes to read maximally to identify format. When encoding it is not used. When decoding it is set by user through AVOPtions
+        /// (no direct access).
+        /// </summary>
+        public int format_probesize;
+
         #endregion
     }
 }
