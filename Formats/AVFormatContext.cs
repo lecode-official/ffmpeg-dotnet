@@ -290,7 +290,7 @@ namespace System.Media.FFmpeg.Interop.Formats
         /// Contains the number of bytes that are skipped initially when opening a stream. When encoding this is not used. When decoding this is set by the
         /// user via AVOptions (no direct access).
         /// </summary>
-    	public long skip_initial_bytes;
+        public long skip_initial_bytes;
 
         /// <summary>
         /// Contains a value for correcting single timestamp overflows. When enocding this is not used. When decoding this is set by the user via AVOptions
@@ -321,6 +321,170 @@ namespace System.Media.FFmpeg.Interop.Formats
         /// (no direct access).
         /// </summary>
         public int format_probesize;
+
+        /// <summary>
+        /// Contains a comma-separated list of allowed decoders. If <c>null</c> the nall are allowed. This is not used when encoding. When decoding this is
+        /// set by the user through AVOptions (no direct access).
+        /// </summary>
+        [MarshalAs(UnmanagedType.LPStr)]
+        public string codec_whitelist;
+
+        /// <summary>
+        /// Contains a comma-separated list of allowed demuxers. If <c>null</c> then all are allowed. This is not used when encoding. When decoding this is
+        /// set by the user through AVOptions (no direct access).
+        /// </summary>
+        [MarshalAs(UnmanagedType.LPStr)]
+        public string format_whitelist;
+
+        /// <summary>
+        /// Contains an opaque field for libavformat internal usage. Must not be accessed in any way by callers.
+        /// </summary>
+        public IntPtr @internal;
+
+        /// <summary>
+        /// Contains an IO repositioned flag. This is set by avformat when the underlaying IO context read pointer is repositioned, for example when doing
+        /// byte based seeking. Demuxers can use the flag to detect such changes.
+        /// </summary>
+        public int io_repositioned;
+
+        /// <summary>
+        /// Contains the forced video codec (as a pointer to a <see cref="AVCodec"/> structure). This allows forcing a specific decoder, even when there are
+        /// multiple with the same codec ID. When demuxing this is set by the user via av_format_set_video_codec (no direct access).
+        /// </summary>
+        public IntPtr video_codec;
+
+        /// <summary>
+        /// Contains the forced audio codec (as a pointer to a <see cref="AVCodec"/> structure). This allows forcing a specific decoder, even when there are
+        /// multiple with the same codec ID. When demuxing this is set by the user via av_format_set_audio_codec (no direct access).
+        /// </summary>
+        public IntPtr audio_codec;
+
+        /// <summary>
+        /// Contains the forced subtitle codec (as a pointer to a <see cref="AVCodec"/> structure). This allows forcing a specific decoder, even when there
+        /// are multiple with the same codec ID. When demuxing this is set by the user via av_format_set_subtitle_codec (no direct access).
+        /// </summary>
+        public IntPtr subtitle_codec;
+
+        /// <summary>
+        /// Contains the forced data codec (as a pointer to a <see cref="AVCodec"/> structure). This allows forcing a specific decoder, even when there are
+        /// multiple with the same codec ID. When demuxing this is set by the user via av_format_set_data_codec (no direct access).
+        /// </summary>
+        public IntPtr data_codec;
+
+        /// <summary>
+        /// Contains the number of bytes to be written as padding in a metadata header. This is unused when demuxing. When muxing this is set by the user via
+        /// av_format_set_metadata_header_padding.
+        /// </summary>
+        public int metadata_header_padding;
+
+        /// <summary>
+        /// Contains user data. This is place for some private data of the user.
+        /// </summary>
+        public IntPtr opaque;
+
+        /// <summary>
+        /// Contains the callback used by devices to communicate with application.
+        /// </summary>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public AVFormatControlMessage control_message_cb;
+
+        /// <summary>
+        /// Contains the output timestamp offset, in microseconds. For muxing this is set by user via AVOptions (no direct access).
+        /// </summary>
+        public long output_ts_offset;
+
+        /// <summary>
+        /// Contains the dump format separator. Can be ", " or "\n      " or anything else. Code outside libavformat should access this field using AVOptions
+        /// (no direct access). For muxing as well as demuxing this is set by the user.
+        /// </summary>
+        public UIntPtr dump_separator;
+
+        /// <summary>
+        /// Contains the forced data codec ID. For demuxing thsi is set by the user.
+        /// </summary>
+        public AVCodecID data_codec_id;
+
+        /// <summary>
+        /// Contains a callback, which is called to open further IO contexts when needed for demuxing. This can be set by the user application to perform
+        /// security checks on the URLs before opening them. The function should behave like avio_open2(), AVFormatContext is provided as contextual
+        /// information and to reach AVFormatContext.opaque. If <c>null</c> then some simple checks are used together with avio_open2(). Must not be accessed
+        /// directly from outside avformat. For demuxing this is ste by the user. This is deprecated, use io_open and io_close instead.
+        /// </summary>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public OpenCallback open_cb;
+
+        /// <summary>
+        /// Contains a comma-separated list of allowed protocols. This is not used while encoding. When decoding this is set by the user through AVOptions (no
+        /// direct access)
+        /// </summary>
+        [MarshalAs(UnmanagedType.LPStr)]
+        public string protocol_whitelist;
+
+        /// <summary>
+        /// Contains a callback for opening new IO streams. Whenever a muxer or a demuxer needs to open an IO stream (typically from avformat_open_input()
+        /// for demuxers, but for certain formats can happen at other times as well), it will call this callback to obtain an IO context. Note, certain muxers
+        /// and demuxers do nesting, i.e. they open one or more additional internal format contexts. Thus the AVFormatContext pointer passed to this callback
+        /// may be different from the one facing the caller. It will, however, have the same 'opaque' field.
+        /// </summary>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public IOOpenCallback io_open;
+
+        /// <summary>
+        /// Contains a callback for closing the streams opened with AVFormatContext.io_open().
+        /// </summary>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
+        public IOCloseCallback io_close;
+
+        /// <summary>
+        /// Contains a comma-separated list of disallowed protocols. This is not used while encoding. When decoding this is set by the user through AVOptions
+        /// (no direct access).
+        /// </summary>
+        [MarshalAs(UnmanagedType.LPStr)]
+        public string protocol_blacklist;
+
+        #endregion
+
+        #region Public Delegates
+
+        /// <summary>
+        /// Represetns a delegate for a callback used by devices to communicate with the applicaiton.
+        /// </summary>
+        /// <param name="s">The <see cref="AVFormatContext"/>.</param>
+        /// <param name="type">The type of the message.</param>
+        /// <param name="data">The data that is send.</param>
+        /// <param name="data_size">The size of the data that is send.</param>
+        /// <returns></returns>
+        public delegate int AVFormatControlMessage(IntPtr s, int type, IntPtr data, UIntPtr data_size);
+
+        /// <summary>
+        /// Represents a delegate for a callback when further IO streams are opened, needed by for demuxing.
+        /// </summary>
+        /// <param name="s">The <see cref="AVFormatContext"/>.</param>
+        /// <param name="p">On success the The <see cref="AVIOContext"/>.</param>
+        /// <param name="url">The URL that is being opened.</param>
+        /// <param name="flags">A combination of AVIO_FLAG_.</param>
+        /// <param name="int_cb">The callback for closing blocking IO functions.</param>
+        /// <param name="options">A dictionary of additional options, with the same semantics as in avio_open2().</param>
+        /// <returns>Returns 0 when everything went alright and a negative number otherwise.</returns>
+        public delegate int OpenCallback(IntPtr s, [Out] out IntPtr p, [MarshalAs(UnmanagedType.LPStr)] string url, int flags, IntPtr int_cb, IntPtr options);
+
+        /// <summary>
+        /// Represents a delegate for a callback when further IO streams are opened.
+        /// </summary>
+        /// <param name="s">The <see cref="AVFormatContext"/>.</param>
+        /// <param name="pb">On success, the newly opened IO context should be returned here.</param>
+        /// <param name="url">The URL that is being opened.</param>
+        /// <param name="flags">A combination of AVIO_FLAG_.</param>
+        /// <param name="options">A dictionary of additional options, with the same semantics as in avio_open2().</param>
+        /// <returns>Returns 0 when everything went alright and a negative number otherwise.</returns>
+        public delegate int IOOpenCallback(IntPtr s, [Out] out IntPtr pb, [MarshalAs(UnmanagedType.LPStr)] string url, int flags, IntPtr options);
+
+        /// <summary>
+        /// Represents a delegate for a callback when IO streams are closed.
+        /// </summary>
+        /// <param name="s">The <see cref="AVFormatContext"/>.</param>
+        /// <param name="pb">The open IO context, that is to be closed.</param>
+        public delegate void IOCloseCallback(IntPtr s, IntPtr pb);
 
         #endregion
     }

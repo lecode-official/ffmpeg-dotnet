@@ -19,6 +19,7 @@ namespace System.Media.FFmpeg.Interop.Formats
         /// <summary>
         /// Contains the callback function for checking whether to abort blocking functions.
         /// </summary>
+        [MarshalAs(UnmanagedType.FunctionPtr)]
         public InterruptCallback callback;
 
         /// <summary>
