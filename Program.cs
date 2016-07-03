@@ -23,11 +23,11 @@ namespace FFmpeg
         public static void Main(string[] args)
         {
             // Initializes the Codecs and formats
-            AVFormat.av_register_all();
+            LibAVFormat.av_register_all();
 
             // Loads a video
             IntPtr formatContextPointer;
-            if (AVFormat.avformat_open_input(out formatContextPointer, "/home/david/Downloads/big_buck_bunny_1080p_stereo.ogg", IntPtr.Zero, IntPtr.Zero) != 0)
+            if (LibAVFormat.avformat_open_input(out formatContextPointer, "/home/david/Downloads/big_buck_bunny_1080p_stereo.ogg", IntPtr.Zero, IntPtr.Zero) != 0)
             {
                 Console.WriteLine("An error occurred while opening the video.");
             }
@@ -37,7 +37,7 @@ namespace FFmpeg
                 Console.WriteLine($"Opened video: {formatContext.filename}");
 
                 // Closes the video again
-                AVFormat.avformat_close_input(formatContextPointer);
+                LibAVFormat.avformat_close_input(formatContextPointer);
                 Console.WriteLine("Closed video");
             }
 

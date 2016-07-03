@@ -10,7 +10,7 @@ namespace FFmpeg.Codecs
 	/// <summary>
 	/// Represents a simple PInvoke wrapper aroung the libavcodec library of the FFmpeg project.
 	/// </summary>
-    public class AVCodec
+    public class LibAVCodec
     {
         #region Public Methods
         
