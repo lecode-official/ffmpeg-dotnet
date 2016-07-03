@@ -79,7 +79,13 @@ namespace FFmpeg.Codecs
         /// Contains the current byte position in the stream, -1 if unknown.
         /// </summary>
     	public long pos;
-        
+
+        /// <summary>
+        /// Contains the same value as the duration field, but as <see cref="long"/>. This was required for Matroska subtitles, whose duration values could
+        /// overflow when the duration field was still an int.
+        /// </summary>
+        public long convergence_duration;
+
         #endregion
     }
 }
