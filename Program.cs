@@ -1,12 +1,13 @@
 ﻿
 #region Using Directives
 
-using System.Media.FFmpeg.Interop.Formats;
+using FFmpeg.Formats;
+using System;
 using System.Runtime.InteropServices;
 
 #endregion
 
-namespace System.Media.FFmpeg.Interop
+namespace FFmpeg
 {
     /// <summary>
     /// Represents the entry-point to the FFmpeg.NET sample application.

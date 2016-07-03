@@ -1,5 +1,5 @@
 
-namespace System.Media.FFmpeg.Interop.Codecs
+namespace FFmpeg.Codecs
 {
     /// <summary>
     /// Identify the syntax and semantics of the bitstream. The principle is roughly: two decoders with the same ID can decode the same streams, two encoders

@@ -1,5 +1,5 @@
  
- namespace System.Media.FFmpeg.Interop
+ namespace FFmpeg
  {
      /// <summary>
      /// Represents a list of the FFmpeg libraries names.

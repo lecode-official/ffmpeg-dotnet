@@ -1,11 +1,12 @@
 
 #region Using Directives
 
+using System;
 using System.Runtime.InteropServices;
 
 #endregion
 
-namespace System.Media.FFmpeg.Interop.Formats
+namespace FFmpeg.Formats
 {
     /// <summary>
     /// Represents a callback for checking whether to abort blocking functions. AVERROR_EXIT is returned in this case by the interrupted function. During blocking

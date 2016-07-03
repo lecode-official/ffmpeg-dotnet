@@ -1,11 +1,12 @@
 
 #region Using Directives
 
+using System;
 using System.Runtime.InteropServices;
 
 #endregion
 
-namespace System.Media.FFmpeg.Interop.Formats
+namespace FFmpeg.Formats
 {
 	/// <summary>
 	/// Represents a simple PInvoke wrapper aroung the libavformat library of the FFmpeg project.
