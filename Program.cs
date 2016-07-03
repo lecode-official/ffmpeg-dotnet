@@ -49,7 +49,7 @@ namespace FFmpeg
             Console.WriteLine($"Number streams: {formatContext.nb_streams}");
             for (int i = 0; i < formatContext.nb_streams; i++)
             {
-                AVStream stream = Marshal.PtrToStructure<AVStream>(formatContext.streams);
+                AVStream stream = Marshal.PtrToStructure<AVStream>(Marshal.PtrToStructure<IntPtr>(IntPtr.Add(formatContext.streams, i * IntPtr.Size)));
                 AVCodecContext codecContext = Marshal.PtrToStructure<AVCodecContext>(stream.codec);
                 Console.WriteLine(codecContext.codec_type);
             }
