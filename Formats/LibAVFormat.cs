@@ -11,7 +11,7 @@ namespace FFmpeg.Formats
 	/// <summary>
 	/// Represents a simple PInvoke wrapper aroung the libavformat library of the FFmpeg project.
 	/// </summary>
-    public class AVFormat
+    public class LibAVFormat
     {
         #region Public Methods
         
