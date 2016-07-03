@@ -4,6 +4,7 @@
 using FFmpeg.Formats;
 using System;
 using System.Runtime.InteropServices;
+using FFmpeg.Codecs;
 
 #endregion
 
@@ -27,23 +28,34 @@ namespace FFmpeg
 
             // Loads a video
             IntPtr formatContextPointer;
-            if (LibAVFormat.avformat_open_input(out formatContextPointer, "/home/david/Downloads/big_buck_bunny_1080p_stereo.ogg", IntPtr.Zero, IntPtr.Zero) != 0)
+            if (LibAVFormat.avformat_open_input(out formatContextPointer, "/home/david/Downloads/big_buck_bunny_480p_surround-fix.avi", IntPtr.Zero, IntPtr.Zero) < 0)
             {
                 Console.WriteLine("An error occurred while opening the video.");
+                return;
             }
-            else
+
+            // Prints out a success message
+            AVFormatContext formatContext = Marshal.PtrToStructure<AVFormatContext>(formatContextPointer);
+            Console.WriteLine($"Opened video: {formatContext.filename}");
+
+            // Retrieve stream information of the video
+            if (LibAVFormat.avformat_find_stream_info(formatContextPointer, IntPtr.Zero) < 0)
             {
-                AVFormatContext formatContext = Marshal.PtrToStructure<AVFormatContext>(formatContextPointer);
-                Console.WriteLine($"Opened video: {formatContext.filename}");
-
-                // Closes the video again
-                LibAVFormat.avformat_close_input(formatContextPointer);
-                Console.WriteLine("Closed video");
+                Console.WriteLine("An error occurred while retrieving the stream information of the video.");
+                return;
             }
 
-            // Waits for the user to press a key, before the application is exited
-            Console.Write("Press any key to exit...");
-            Console.ReadKey();
+            // Prints out information about each frame in the video
+            Console.WriteLine($"Number streams: {formatContext.nb_streams}");
+            for (int i = 0; i < formatContext.nb_streams; i++)
+            {
+                AVStream stream = Marshal.PtrToStructure<AVStream>(formatContext.streams);
+                AVCodecContext codecContext = Marshal.PtrToStructure<AVCodecContext>(stream.codec);
+            }
+
+            // Closes the video again
+            LibAVFormat.avformat_close_input(formatContextPointer);
+            Console.WriteLine("Closed video");
         }
         
         #endregion
