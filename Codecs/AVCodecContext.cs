@@ -182,6 +182,20 @@ namespace FFmpeg.Codecs
         /// </summary>
         public int coded_height;
 
+        /// <summary>
+        /// Contains the number of pictures in a group of pictures, or 0 for intra_only. When encoding this is set by the user. When decoding this is
+        /// unused.
+        /// </summary>
+        public int gop_size;
+
+        /// <summary>
+        /// Contains the pixel format, see AV_PIX_FMT_xxx. May be set by the demuxer if known from headers. May be overridden by the decoder if it knows
+        /// better. Note this field may not match the value of the last <see cref="AVFrame"/> output by avcodec_receive_frame() due frame reordering. When
+        /// encoding this is set by the user. When decoding this is set by the user if known and otherwise overridden by libavcodec while parsing the data.
+        /// </summary>
+    	public AVPixelFormat pix_fmt;
+
+
         #endregion
     }
 }

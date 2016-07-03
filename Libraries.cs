@@ -27,6 +27,12 @@
          /// </summary>
          public const string AVUtil = "libavutil.so.55";
 
+         /// <summary>
+         /// Contains the name of the libswscale library. The libswscale library performs highly optimized image scaling and colorspace and pixel format
+         /// conversion operations. 
+         /// </summary>
+         public const string SwScale = "libswscale.so.4";
+
          #endregion
      }
  }
