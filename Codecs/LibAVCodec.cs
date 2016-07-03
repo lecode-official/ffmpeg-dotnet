@@ -55,6 +55,18 @@ namespace FFmpeg.Codecs
         [DllImport(Libraries.AVCodec)]
         public static extern int avcodec_open2(IntPtr avctx, IntPtr codec, IntPtr options);
 
+        /// <summary>
+        /// Closes a given AVCodecContext and free all the data associated with it (but not the <see cref="AVCodecContext"/> itself). Calling this function
+        /// on an <see cref="AVCodecContext"/> that hasn't been opened will free the codec-specific data allocated in avcodec_alloc_context3() with a
+        /// non-<c>null</c> codec. Subsequent calls will do nothing. Note, that you should not use this function. Use avcodec_free_context() to destroy a
+        /// codec context (either open or closed). Opening and closing a codec context multiple times is not supported anymore - use multiple codec contexts
+        /// instead.
+        /// </summary>
+        /// <param name="avctx">The pointer to the <see cref="AVCodecContext"/> that is to be closed.</param>
+        /// <returns>Returns 0 if succesful and a negative value otherwise.</returns>
+        [DllImport(Libraries.AVCodec)]
+        public static extern int avcodec_close(IntPtr avctx);
+
         #endregion 
     }
 }

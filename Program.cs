@@ -82,9 +82,16 @@ namespace FFmpeg
             }
             Console.WriteLine("Successfully loaded codec.");
 
-            // Closes the video again
+            // Allocates video frames for the original decoded frame and the frame in RGB (which is then later stored in a file)
+            IntPtr frame = LibAVUtil.av_frame_alloc();
+            IntPtr frameRgb = LibAVUtil.av_frame_alloc();
+
+            // Frees and closes all acquired resources
+            LibAVUtil.av_free(frameRgb);
+            LibAVUtil.av_free(frame);
+            LibAVCodec.avcodec_close(videoStream.codec);
             LibAVFormat.avformat_close_input(formatContextPointer);
-            Console.WriteLine("Closed video");
+            Console.WriteLine("Freed all acquired resources.");
         }
         
         #endregion
