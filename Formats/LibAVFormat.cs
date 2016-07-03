@@ -74,7 +74,7 @@ namespace FFmpeg.Formats
         /// <param name="pkt">The packet that is benig output.</param>
         /// <returns>Return 0 if everything went alright, a negative value other for an error, or end of file.</returns>
         [DllImport(Libraries.AVFormat)]
-        public static extern int av_read_frame(IntPtr s, [Out] out IntPtr pkt);
+        public static extern int av_read_frame(IntPtr s, IntPtr pkt);
 
         #endregion
     }

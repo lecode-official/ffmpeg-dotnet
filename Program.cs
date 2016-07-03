@@ -94,8 +94,8 @@ namespace FFmpeg
             // Assigns appropriate parts of buffer to image planes in frameRgb, note that frameRgb is an AVFrame, but AVFrame is a superset of AVPicture
             LibAVCodec.avpicture_fill(frameRgb, buffer, AVPixelFormat.AV_PIX_FMT_RGB24, videoCodecContext.width, videoCodecContext.height);
 
-            IntPtr packetPointer;
-            while (LibAVFormat.av_read_frame(formatContextPointer, out packetPointer) >= 0)
+            IntPtr packetPointer = Marshal.AllocHGlobal(Marshal.SizeOf<AVPacket>());
+            while (LibAVFormat.av_read_frame(formatContextPointer, packetPointer) >= 0)
             {
                 AVPacket packet = Marshal.PtrToStructure<AVPacket>(packetPointer);
                 if (packet.stream_index == videoStreamId)
@@ -105,7 +105,7 @@ namespace FFmpeg
                     LibAVCodec.avcodec_decode_video2(videoStream.codec, frame, ref frameFinished, packetPointer);
                     
                     // Did we get a video frame?
-                    if (frameFinished == 0)
+                    if (frameFinished != 0)
                     {
                         // Convert the image from its native format to RGB
                         IntPtr sws_ctx = LibSwScale.sws_getContext(videoCodecContext.width, videoCodecContext.height, videoCodecContext.pix_fmt,
