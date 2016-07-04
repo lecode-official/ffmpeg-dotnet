@@ -37,6 +37,27 @@ namespace FFmpeg.Scaling
         [DllImport(Libraries.SwScale)]
         public static extern IntPtr sws_getContext(int srcW, int srcH, AVPixelFormat srcFormat, int dstW, int dstH, AVPixelFormat dstFormat, int flags, IntPtr srcFilter, IntPtr dstFilter, IntPtr param);
 
+        /// <summary>
+        /// Scales the image slice in srcSlice and put the resulting scaled slice in the image in dst. A slice is a sequence of consecutive rows in an image.
+        /// Slices have to be provided in sequential order, either in top-bottom or bottom-top order. If slices are provided in non-sequential order the
+        /// behavior of the function is undefined.
+        /// </summary>
+        /// <param name="c">The scaling context previously created with sws_getContext().</param>
+        /// <param name="srcSlice">The array containing the pointers to the planes of the source slice.</param>
+        /// <param name="srcStride">The array containing the strides for each plane of the source image.</param>
+        /// <param name="srcSliceY">
+        /// The position in the source image of the slice to process, that is the number (counted starting from zero) in the image of the first row of the
+        /// slice.
+        /// </param>
+        /// <param name="srcSliceH">The height of the source slice, that is the number of rows in the slice.</param>
+        /// <param name="dst">The array containing the pointers to the planes of the destination image.</param>
+        /// <param name="dstStride">The array containing the strides for each plane ofthe destination image.</param>
+        /// <returns>Returns the height of the output slice.</returns>
+        [DllImport(Libraries.SwScale)]
+        public static extern IntPtr sws_scale(IntPtr c, IntPtr[] srcSlice, int[] srcStride, int srcSliceY, int srcSliceH, IntPtr[] dst, int[] dstStride);
+
+        //int sws_scale(struct SwsContext *c, const uint8_t *const srcSlice[], const int srcStride[], int srcSliceY, int srcSliceH, uint8_t *const dst[], const int dstStride[]);
+
         #endregion
     }
 }

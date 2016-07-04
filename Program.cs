@@ -84,34 +84,37 @@ namespace FFmpeg
             Console.WriteLine("Successfully loaded codec.");
 
             // Allocates video frames for the original decoded frame and the frame in RGB (which is then later stored in a file)
-            IntPtr frame = LibAVUtil.av_frame_alloc();
-            IntPtr frameRgb = LibAVUtil.av_frame_alloc();
+            IntPtr framePointer = LibAVUtil.av_frame_alloc();
+            IntPtr frameRgbPointer = LibAVUtil.av_frame_alloc();
 
             // Determines the required buffer size and allocates the buffer for the RGB frame
             int numBytes = LibAVCodec.avpicture_get_size(AVPixelFormat.AV_PIX_FMT_RGB24, videoCodecContext.width, videoCodecContext.height);
             IntPtr buffer = LibAVUtil.av_malloc(new UIntPtr((uint)(numBytes * sizeof(byte))));
 
             // Assigns appropriate parts of buffer to image planes in frameRgb, note that frameRgb is an AVFrame, but AVFrame is a superset of AVPicture
-            LibAVCodec.avpicture_fill(frameRgb, buffer, AVPixelFormat.AV_PIX_FMT_RGB24, videoCodecContext.width, videoCodecContext.height);
+            LibAVCodec.avpicture_fill(frameRgbPointer, buffer, AVPixelFormat.AV_PIX_FMT_RGB24, videoCodecContext.width, videoCodecContext.height);
+            AVFrame frameRgb = Marshal.PtrToStructure<AVFrame>(frameRgbPointer);
 
+            // Cycles over all frames of the video and dumps the frames to file
             IntPtr packetPointer = Marshal.AllocHGlobal(Marshal.SizeOf<AVPacket>());
             while (LibAVFormat.av_read_frame(formatContextPointer, packetPointer) >= 0)
             {
                 AVPacket packet = Marshal.PtrToStructure<AVPacket>(packetPointer);
                 if (packet.stream_index == videoStreamId)
                 {
-                    // Decode video frame
+                    // Decodes video frame
                     int frameFinished = 0;
-                    LibAVCodec.avcodec_decode_video2(videoStream.codec, frame, ref frameFinished, packetPointer);
+                    LibAVCodec.avcodec_decode_video2(videoStream.codec, framePointer, ref frameFinished, packetPointer);
+                    AVFrame frame = Marshal.PtrToStructure<AVFrame>(framePointer);
                     
-                    // Did we get a video frame?
+                    // Checks if the video frame was properly decoded
                     if (frameFinished != 0)
                     {
-                        // Convert the image from its native format to RGB
-                        IntPtr sws_ctx = LibSwScale.sws_getContext(videoCodecContext.width, videoCodecContext.height, videoCodecContext.pix_fmt,
+                        // Converts the image from its native format to RGB
+                        IntPtr scaleContextPointer = LibSwScale.sws_getContext(videoCodecContext.width, videoCodecContext.height, videoCodecContext.pix_fmt,
                             videoCodecContext.width, videoCodecContext.height, AVPixelFormat.AV_PIX_FMT_RGB24, ScalingFlags.SWS_BILINEAR, IntPtr.Zero,
                             IntPtr.Zero, IntPtr.Zero);
-                        //sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameRGB->data, pFrameRGB->linesize);
+                        LibSwScale.sws_scale(scaleContextPointer, frame.data, frame.linesize, 0, videoCodecContext.height, frameRgb.data, frameRgb.linesize);
                         //SaveFrame(pFrameRGB, pCodecCtx->width, pCodecCtx->height, i);
                     }
                 }
@@ -122,8 +125,8 @@ namespace FFmpeg
 
             // Frees and closes all acquired resources
             LibAVUtil.av_free(buffer);
-            LibAVUtil.av_free(frameRgb);
-            LibAVUtil.av_free(frame);
+            LibAVUtil.av_free(frameRgbPointer);
+            LibAVUtil.av_free(framePointer);
             LibAVCodec.avcodec_close(videoStream.codec);
             IntPtr formatContextPointerPointer = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>());
             Marshal.StructureToPtr(formatContextPointer, formatContextPointerPointer, false);
