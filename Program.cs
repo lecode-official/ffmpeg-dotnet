@@ -125,7 +125,10 @@ namespace FFmpeg
             LibAVUtil.av_free(frameRgb);
             LibAVUtil.av_free(frame);
             LibAVCodec.avcodec_close(videoStream.codec);
-            LibAVFormat.avformat_close_input(formatContextPointer);
+            IntPtr formatContextPointerPointer = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>());
+            Marshal.StructureToPtr(formatContextPointer, formatContextPointerPointer, false);
+            LibAVFormat.avformat_close_input(formatContextPointerPointer);
+            Marshal.FreeHGlobal(formatContextPointerPointer);
             Console.WriteLine("Freed all acquired resources.");
         }
         
