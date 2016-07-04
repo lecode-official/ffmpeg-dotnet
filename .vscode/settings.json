@@ -5,6 +5,7 @@
         "**/.svn": true,
         "**/.DS_Store": true,
         "**/bin": true,
-        "**/obj": true
+        "**/obj": true,
+        "**/project.lock.json": true
     }
 }
