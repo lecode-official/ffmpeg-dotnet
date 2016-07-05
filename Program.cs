@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using FFmpeg.Codecs;
 using FFmpeg.Utilities;
 using FFmpeg.Scaling;
+using System.IO;
 
 #endregion
 
@@ -96,6 +97,7 @@ namespace FFmpeg
             AVFrame frameRgb = Marshal.PtrToStructure<AVFrame>(frameRgbPointer);
 
             // Cycles over all frames of the video and dumps the frames to file
+            int frameIndex = 0;
             IntPtr packetPointer = Marshal.AllocHGlobal(Marshal.SizeOf<AVPacket>());
             while (LibAVFormat.av_read_frame(formatContextPointer, packetPointer) >= 0)
             {
@@ -115,7 +117,10 @@ namespace FFmpeg
                             videoCodecContext.width, videoCodecContext.height, AVPixelFormat.AV_PIX_FMT_RGB24, ScalingFlags.SWS_BILINEAR, IntPtr.Zero,
                             IntPtr.Zero, IntPtr.Zero);
                         LibSwScale.sws_scale(scaleContextPointer, frame.data, frame.linesize, 0, videoCodecContext.height, frameRgb.data, frameRgb.linesize);
-                        //SaveFrame(pFrameRGB, pCodecCtx->width, pCodecCtx->height, i);
+
+                        // Checks if this is one of the first 5 frames, if so then it is stored to disk
+                        if (++frameIndex > 10000 && frameIndex <= 10005)
+                            Program.SaveFrame(frameRgb, videoCodecContext.width, videoCodecContext.height, frameIndex);
                     }
                 }
                 
@@ -134,7 +139,36 @@ namespace FFmpeg
             Marshal.FreeHGlobal(formatContextPointerPointer);
             Console.WriteLine("Freed all acquired resources.");
         }
-        
+
+        /// <summary>
+        /// Saves the specified frame to file in the PPM format.
+        /// </summary>
+        /// <param name="frame">The frame that is to be stored.</param>
+        /// <param name="width">The width of the frame.</param>
+        /// <param name="height">The height of the frame.</param>
+        /// <param name="frameIndex">The index of the frame, which is used to generate a unique file name.</param>
+        private static void SaveFrame(AVFrame frame, int width, int height, int frameIndex)
+        {
+            // Opens a file to which the frame is dumped
+            using (FileStream fileStream = new FileStream($"/home/david/Downloads/frame{frameIndex}.ppm", FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter streamWriter = new StreamWriter(fileStream))
+                {
+                    // Writes the header
+                    streamWriter.WriteLine("P6");
+                    streamWriter.WriteLine($"{width} {height}");
+                    streamWriter.WriteLine("255");
+
+                    // Writes the pixel data
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width * 3; x++)
+                            streamWriter.Write(Marshal.PtrToStructure<byte>(IntPtr.Add(frame.data[0], y * frame.linesize[0] + x)));
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }
