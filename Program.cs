@@ -97,6 +97,7 @@ namespace FFmpeg
             AVFrame frameRgb = Marshal.PtrToStructure<AVFrame>(frameRgbPointer);
 
             // Cycles over all frames of the video and dumps the frames to file
+            Console.WriteLine("Decoding vidoe frames...");
             int frameIndex = 0;
             IntPtr packetPointer = Marshal.AllocHGlobal(Marshal.SizeOf<AVPacket>());
             while (LibAVFormat.av_read_frame(formatContextPointer, packetPointer) >= 0)
@@ -122,13 +123,17 @@ namespace FFmpeg
                         // Checks if this is one of the first 5 frames, if so then it is stored to disk
                         frameIndex++;
                         if (frameIndex > 24 && frameIndex <= 30)
+                        {
+                            Console.WriteLine($"Writing frame {frameIndex} to file...");
                             Program.SaveFrame(frameRgb, videoCodecContext.width, videoCodecContext.height, frameIndex);
+                        }
                     }
                 }
                 
                 // Frees the packet that was allocated by av_read_frame
                 LibAVCodec.av_free_packet(packetPointer);
             }
+            Console.WriteLine("Finihsed decoding of the video.");
 
             // Frees and closes all acquired resources
             LibAVUtil.av_free(buffer);
