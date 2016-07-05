@@ -9,7 +9,7 @@
             "program": "${workspaceRoot}/bin/Debug/netcoreapp1.0/ffmpeg-dotnet.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
-            "externalConsole": true,
+            "externalConsole": false,
             "stopAtEntry": false
         }
     ]
