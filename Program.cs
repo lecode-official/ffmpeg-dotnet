@@ -117,9 +117,11 @@ namespace FFmpeg
                             videoCodecContext.width, videoCodecContext.height, AVPixelFormat.AV_PIX_FMT_RGB24, ScalingFlags.SWS_BILINEAR, IntPtr.Zero,
                             IntPtr.Zero, IntPtr.Zero);
                         LibSwScale.sws_scale(scaleContextPointer, frame.data, frame.linesize, 0, videoCodecContext.height, frameRgb.data, frameRgb.linesize);
+                        frameRgb = Marshal.PtrToStructure<AVFrame>(frameRgbPointer);
 
                         // Checks if this is one of the first 5 frames, if so then it is stored to disk
-                        if (++frameIndex > 10000 && frameIndex <= 10005)
+                        frameIndex++;
+                        if (frameIndex > 24 && frameIndex <= 30)
                             Program.SaveFrame(frameRgb, videoCodecContext.width, videoCodecContext.height, frameIndex);
                     }
                 }
@@ -152,19 +154,17 @@ namespace FFmpeg
             // Opens a file to which the frame is dumped
             using (FileStream fileStream = new FileStream($"/home/david/Downloads/frame{frameIndex}.ppm", FileMode.Create, FileAccess.Write))
             {
-                using (StreamWriter streamWriter = new StreamWriter(fileStream))
-                {
-                    // Writes the header
-                    streamWriter.WriteLine("P6");
-                    streamWriter.WriteLine($"{width} {height}");
-                    streamWriter.WriteLine("255");
+                // Writes the header
+                byte[] header = System.Text.Encoding.ASCII.GetBytes($"P6 {width} {height} 255\n");
+                fileStream.Write(header, 0, header.Length);
 
-                    // Writes the pixel data
-                    for (int y = 0; y < height; y++)
-                    {
-                        for (int x = 0; x < width * 3; x++)
-                            streamWriter.Write(Marshal.PtrToStructure<byte>(IntPtr.Add(frame.data[0], y * frame.linesize[0] + x)));
-                    }
+                // Writes the pixel data
+                for (int y = 0; y < height; y++)
+                {
+                    byte[] line = new byte[width * 3];
+                    for (int x = 0; x < width * 3; x++)
+                        line[x] = Marshal.PtrToStructure<byte>(IntPtr.Add(frame.data[0], (y * frame.linesize[0] + x) * Marshal.SizeOf<byte>()));
+                    fileStream.Write(line, 0, line.Length);
                 }
             }
         }
