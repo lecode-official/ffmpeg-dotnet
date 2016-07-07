@@ -14,7 +14,7 @@ namespace FFmpegDotNet
     /// </summary>
     public class MediaStream
     {
-        #region Constructors
+        #region Constructoars
 
         /// <summary>
         /// Initializes a new <see cref="MediaStream"/> instance.
@@ -25,8 +25,9 @@ namespace FFmpegDotNet
             // Stores the pointer ot the internal FFmpeg stream structure for later use
             this.StreamPointer = streamPointer;
 
-            // Converts the internal FFmpeg stream structure to a managed structure and stores it for later use
+            // Converts the internal FFmpeg stream and codec context structures to a managed structures and stores them for later use
             this.InternalStream = Marshal.PtrToStructure<AVStream>(this.StreamPointer);
+            this.Codec = new CodecContext(this.InternalStream.codec);
         }
 
         #endregion
@@ -42,6 +43,15 @@ namespace FFmpegDotNet
         /// Gets the internal FFmpeg stream converted to a managed structure.
         /// </summary>
         internal AVStream InternalStream { get; private set; }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the codec context for the codec, that can be used to decode this stream.
+        /// </summary>
+        public CodecContext Codec { get; private set; }
 
         #endregion
     }
