@@ -2,11 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch",
+            "name": "Launch Sample",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/bin/Debug/netcoreapp1.0/ffmpeg-dotnet.dll",
+            "program": "${workspaceRoot}/Source/FFmpegDotNet.Samples.FrameExtraction/bin/Debug/netcoreapp1.0/FFmpegDotNet.Samples.FrameExtraction.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "externalConsole": false,

@@ -3,6 +3,9 @@
     "command": "dotnet",
     "isShellCommand": true,
     "args": [],
+    "options": {
+        "cwd": "${workspaceRoot}/Source/FFmpegDotNet.Samples.FrameExtraction"
+    },
     "tasks": [
         {
             "taskName": "build",
