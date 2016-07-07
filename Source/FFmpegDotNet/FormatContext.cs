@@ -14,7 +14,7 @@ namespace FFmpegDotNet
     /// <summary>
     /// Represents the format I/O context.
     /// </summary>
-    public class FormatContext
+    public class FormatContext : IDisposable
     {
         #region Constructors
 
@@ -133,6 +133,63 @@ namespace FFmpegDotNet
                 // Returns the created format context
                 return formatContext;
             });
+        }
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        /// <summary>
+        /// Contains a value that determines whether the format context has already been disposed of.
+        /// </summary>
+        private bool isDisposed;
+
+        /// <summary>
+        /// Disposes of the resources acquired by the format context.
+        /// </summary>
+        /// <param name="disposeOfManagedResources">Determines whether managed resources should be disposed of.</param>
+        protected virtual void Dispose(bool disposeOfManagedResources)
+        {
+            // Checks if the instance has already been disposed of, if not, then it is disposed
+            if (!this.isDisposed)
+            {
+                // Checks if managed resource should be disposed of
+                if (disposeOfManagedResources) { }
+
+                // Disposes of the internal format context
+                IntPtr formatContextPointerPointer = Marshal.AllocHGlobal(Marshal.SizeOf<IntPtr>());
+                Marshal.StructureToPtr(this.FormatContextPointer, formatContextPointerPointer, false);
+                LibAVFormat.avformat_close_input(formatContextPointerPointer);
+                Marshal.FreeHGlobal(formatContextPointerPointer);
+
+                // Sets the is disposed flag, so the object does not get disposed of twice
+                this.isDisposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Disposes of the resources acquired by the format context.
+        /// </summary>
+        public void Dispose()
+        {
+            // Diposes of the resource acquired by the format context
+            this.Dispose(true);
+
+            // Makes sure that the destructor does not dispose of the resourecs again
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        #region Destructor
+
+        /// <summary>
+        /// Destructs the <see cref="FormatContext"/> instance.
+        /// </summary>
+        ~FormatContext()
+        {
+            // Dipsoses of the unmanaged resources acquired by the format context
+            this.Dispose(false);
         }
 
         #endregion
