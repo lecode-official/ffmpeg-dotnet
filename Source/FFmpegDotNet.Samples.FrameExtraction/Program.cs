@@ -11,7 +11,7 @@ using System.IO;
 
 #endregion
 
-namespace FFmpegDotNet.Interop
+namespace FFmpegDotNet.Samples.FrameExtraction
 {
     /// <summary>
     /// Represents the entry-point to the FFmpeg.NET sample application.

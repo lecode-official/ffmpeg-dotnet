@@ -1,0 +1,24 @@
+{
+  "version": "0.1.0-*",
+
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "FFmpegDotNet.Interop": "0.1.0"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      },
+      "imports": "dnxcore50"
+    }
+  }
+}
