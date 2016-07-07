@@ -20,5 +20,9 @@
       },
       "imports": "dnxcore50"
     }
+  },
+
+  "tooling": {
+    "defaultNamespace": "FFmpegDotNet.Samples.FrameExtraction"
   }
 }
