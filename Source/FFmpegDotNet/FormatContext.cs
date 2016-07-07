@@ -18,9 +18,16 @@ namespace FFmpegDotNet
     {
         #region Constructors
 
+        /// <summary>
+        /// Initializes a  new <see cref="FormatContext"/> instance.
+        /// </summary>
+        /// <param name="formatContextPointer">The pointer to the internal FFmpeg format context structure.</param>
         private FormatContext(IntPtr formatContextPointer)
         {
+            // Stores the pointer ot the internal FFmpeg format context structure for later use
             this.FormatContextPointer = formatContextPointer;
+
+            // Converts the internal FFmpeg format context structure to a managed structure and stores it for later use
             this.InternalFormatContext = Marshal.PtrToStructure<AVFormatContext>(this.FormatContextPointer);
         }
 
@@ -28,22 +35,37 @@ namespace FFmpegDotNet
 
         #region Internal Static Properties
 
+        /// <summary>
+        /// Gets a value that determines whether the LibAVFormat library has already been initialized.
+        /// </summary>
         internal static bool IsInitialized { get; private set; }
 
         #endregion
 
         #region Internal Properties
 
+        /// <summary>
+        /// Gets a pointer to the internal FFmpeg format context structure.
+        /// </summary>
         internal IntPtr FormatContextPointer { get; private set; }
 
+        /// <summary>
+        /// Gets the internal FFmpeg format context converted to a managed structure.
+        /// </summary>
         internal AVFormatContext InternalFormatContext { get; private set; }
 
         #endregion
 
         #region Public Properties
 
+        /// <summary>
+        /// Contains the streams of the media file.
+        /// </summary>
         private List<MediaStream> streams = new List<MediaStream>();
 
+        /// <summary>
+        /// Gets the streams of the media file.
+        /// </summary>
         public IEnumerable<MediaStream> Streams
         {
             get
@@ -56,6 +78,9 @@ namespace FFmpegDotNet
 
         #region Internal Static Methods
 
+        /// <summary>
+        /// Initializes the LibAVFormat library if it has not been intialized, yet.
+        /// </summary>
         internal static async Task InitializeAsync()
         {
             if (!FormatContext.IsInitialized)
@@ -69,6 +94,14 @@ namespace FFmpegDotNet
 
         #region Public Static Methods
 
+        /// <summary>
+        /// Loads a media file and opens it in a <see cref="FormatContext"/>.
+        /// </summary>
+        /// <param name="url">The URL from which the media file is to be loaded (may be a local file name).</param>
+        /// <exception cref="InvalidOperationException">
+        /// If the media file could not be loaded, or its stream inforamtion could not be retrieved, then a <see cref="InvalidOperationException"/>
+        /// exception is thrown.
+        /// <returns>Returns the format context into which the media file was loaded.</returns>
         public static async Task<FormatContext> LoadFromUrlAsync(string url)
         {
             // Initializes the LibAVFormat if it had not been initialized yet

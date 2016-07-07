@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace FFmpegDotNet.Interop.Formats
 {
     /// <summary>
-    /// Represents a single frame.
+    /// Represents a single stream within a format context.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct AVStream
