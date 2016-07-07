@@ -5,6 +5,7 @@ using FFmpegDotNet.Interop.Formats;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 #endregion
 
@@ -19,8 +20,8 @@ namespace FFmpegDotNet
 
         private FormatContext(IntPtr formatContextPointer)
         {
-            this.ContextPointer = formatContextPointer;
-            this.Context = Marshal.PtrToStructure<AVFormatContext>(this.ContextPointer);
+            this.FormatContextPointer = formatContextPointer;
+            this.InternalFormatContext = Marshal.PtrToStructure<AVFormatContext>(this.FormatContextPointer);
         }
 
         #endregion
@@ -33,9 +34,23 @@ namespace FFmpegDotNet
 
         #region Internal Properties
 
-        internal IntPtr ContextPointer { get; private set; }
+        internal IntPtr FormatContextPointer { get; private set; }
 
-        internal AVFormatContext Context { get; private set; }
+        internal AVFormatContext InternalFormatContext { get; private set; }
+
+        #endregion
+
+        #region Public Properties
+
+        private List<MediaStream> streams = new List<MediaStream>();
+
+        public IEnumerable<MediaStream> Streams
+        {
+            get
+            {
+                return this.streams;
+            }
+        }
 
         #endregion
 
@@ -71,8 +86,19 @@ namespace FFmpegDotNet
                 if (LibAVFormat.avformat_find_stream_info(formatContextPointer, IntPtr.Zero) < 0)
                     throw new InvalidOperationException("An error occurred while retrieving the stream information of the media file.");
 
-                // Creates a new format context and returns it
-                return new FormatContext(formatContextPointer);
+                // Creates a new format context
+                FormatContext formatContext = new FormatContext(formatContextPointer);
+
+                // Retrieves the streams from the media file
+                for (int i = 0; i < formatContext.InternalFormatContext.nb_streams; i++)
+                {
+                    IntPtr streamPointer = Marshal.PtrToStructure<IntPtr>(IntPtr.Add(formatContext.InternalFormatContext.streams, i * IntPtr.Size));
+                    MediaStream mediaStream = new MediaStream(streamPointer);
+                    formatContext.streams.Add(mediaStream);
+                }
+
+                // Returns the created format context
+                return formatContext;
             });
         }
 
