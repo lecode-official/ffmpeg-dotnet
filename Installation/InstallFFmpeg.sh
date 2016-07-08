@@ -58,6 +58,14 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
+# Adds the installation path to the ld.so.config, which may be missing on some installations
+CanLoadSharedObjects=$(cat /etc/ld.so.conf | grep -c 'include /usr/local/lib/')
+if [ $CanLoadSharedObjects == "0" ]; then
+    echo "Adding the FFmpeg libraries to /etc/ld.so.conf"
+    echo "include /usr/local/lib/" >> /etc/ld.so.conf
+    ldconfig
+fi
+
 # Prints out a success message and exits the installation script
 echo -e "${Green}The installation was completed successfully.${NoColor}"
 exit 0
