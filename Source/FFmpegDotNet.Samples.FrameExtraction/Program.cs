@@ -73,7 +73,8 @@ namespace FFmpegDotNet.Samples.FrameExtraction
 
             // Finds the decoder for the video stream
             IntPtr codecPointer = LibAVCodec.avcodec_find_decoder(videoCodecContext.codec_id);
-            if (codecPointer == IntPtr.Zero) {
+            if (codecPointer == IntPtr.Zero)
+            {
                 Console.WriteLine("The video codec is not supported.");
                 return;
             }
