@@ -79,7 +79,7 @@ namespace FFmpegDotNet.Samples.FrameExtraction
                 return;
             }
             AVCodec videoCodec = Marshal.PtrToStructure<AVCodec>(codecPointer);
-            Console.WriteLine($"Using the {videoCodec.long_name} codec to decdoe the video stream.");
+            Console.WriteLine($"Using the {videoCodec.long_name} codec to decode the video stream.");
 
             // Opens the codec for the video stream
             if (LibAVCodec.avcodec_open2(videoStream.codec, codecPointer, IntPtr.Zero) < 0)
