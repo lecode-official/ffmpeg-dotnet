@@ -60,6 +60,11 @@ namespace FFmpegDotNet
             }
         }
 
+        /// <summary>
+        /// Gets the actual codec.
+        /// </summary>
+        public Codec Codec { get; internal set; }
+
         #endregion
     }
 }
