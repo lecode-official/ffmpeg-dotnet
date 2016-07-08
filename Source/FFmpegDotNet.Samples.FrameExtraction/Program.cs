@@ -29,11 +29,15 @@ namespace FFmpegDotNet.Samples.FrameExtraction
             // Initializes the Codecs and formats
             LibAVFormat.av_register_all();
 
+            // Asks the user for a flie name to load
+            Console.Write("File name: ");
+            string fileName = Console.ReadLine();
+
             // Loads a video
             IntPtr formatContextPointer;
-            if (LibAVFormat.avformat_open_input(out formatContextPointer, "/home/david/Downloads/big_buck_bunny_480p_surround-fix.avi", IntPtr.Zero, IntPtr.Zero) < 0)
+            if (LibAVFormat.avformat_open_input(out formatContextPointer, fileName, IntPtr.Zero, IntPtr.Zero) < 0)
             {
-                Console.WriteLine("An error occurred while opening the video.");
+                Console.WriteLine($"An error occurred while opening the video: {fileName}.");
                 return;
             }
             AVFormatContext formatContext = Marshal.PtrToStructure<AVFormatContext>(formatContextPointer);
@@ -125,7 +129,8 @@ namespace FFmpegDotNet.Samples.FrameExtraction
                         if (frameIndex > 24 && frameIndex <= 30)
                         {
                             Console.WriteLine($"Writing frame {frameIndex} to file...");
-                            Program.SaveFrame(frameRgb, videoCodecContext.width, videoCodecContext.height, frameIndex);
+                            string frameFileName = Path.Combine(Path.GetDirectoryName(fileName), $"frame-{frameIndex}.ppm");
+                            Program.SaveFrame(frameRgb, videoCodecContext.width, videoCodecContext.height, frameFileName);
                         }
                     }
                 }
@@ -153,11 +158,11 @@ namespace FFmpegDotNet.Samples.FrameExtraction
         /// <param name="frame">The frame that is to be stored.</param>
         /// <param name="width">The width of the frame.</param>
         /// <param name="height">The height of the frame.</param>
-        /// <param name="frameIndex">The index of the frame, which is used to generate a unique file name.</param>
-        private static void SaveFrame(AVFrame frame, int width, int height, int frameIndex)
+        /// <param name="fileName">The file name that is to be used to store the frame.</param>
+        private static void SaveFrame(AVFrame frame, int width, int height, string fileName)
         {
             // Opens a file to which the frame is dumped
-            using (FileStream fileStream = new FileStream($"/home/david/Downloads/frame{frameIndex}.ppm", FileMode.Create, FileAccess.Write))
+            using (FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
                 // Writes the header
                 byte[] header = System.Text.Encoding.ASCII.GetBytes($"P6 {width} {height} 255\n");
