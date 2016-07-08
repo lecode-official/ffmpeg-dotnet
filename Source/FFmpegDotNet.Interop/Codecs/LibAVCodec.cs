@@ -43,7 +43,7 @@ namespace FFmpegDotNet.Interop.Codecs
         /// context, then this parameter MUST be either <c>IntPtr.Zero</c> or equal to the previously passed codec.
         /// </param>
         /// <param name="options">
-        /// A dictionary filled with AVCodecContext and codec-private options. On return this object will be filled with options thatwere not found.
+        /// A dictionary filled with AVCodecContext and codec-private options. On return this object will be filled with options that were not found.
         /// </param>
         /// <returns>Returns 0 when successful and a negative value on error.</returns>
         [DllImport(Libraries.AVCodec)]
