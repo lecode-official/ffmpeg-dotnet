@@ -9,7 +9,7 @@
             "program": "${workspaceRoot}/Source/FFmpegDotNet.Samples.FrameExtraction/bin/Debug/netcoreapp1.0/FFmpegDotNet.Samples.FrameExtraction.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
-            "externalConsole": false,
+            "externalConsole": true,
             "stopAtEntry": false
         }
     ]
