@@ -99,8 +99,8 @@ namespace FFmpegDotNet
         /// </summary>
         /// <param name="url">The URL from which the media file is to be loaded (may be a local file name).</param>
         /// <exception cref="InvalidOperationException">
-        /// If the media file could not be loaded, or its stream inforamtion could not be retrieved, then a <see cref="InvalidOperationException"/>
-        /// exception is thrown.
+        /// If the media file could not be loaded, its stream information could not be retrieved, the codec for one of its streams could not be opened, then a
+        /// <see cref="InvalidOperationException"/> exception is thrown.
         /// <returns>Returns the format context into which the media file was loaded.</returns>
         public static async Task<FormatContext> LoadFromUrlAsync(string url)
         {
@@ -125,9 +125,27 @@ namespace FFmpegDotNet
                 // Retrieves the streams from the media file
                 for (int i = 0; i < formatContext.InternalFormatContext.nb_streams; i++)
                 {
+                    // Gets the pointer to the stream
                     IntPtr streamPointer = Marshal.PtrToStructure<IntPtr>(IntPtr.Add(formatContext.InternalFormatContext.streams, i * IntPtr.Size));
                     MediaStream mediaStream = new MediaStream(streamPointer);
+                    
+                    // Creates the codec context for the stream
+                    mediaStream.CodecContext = new CodecContext(mediaStream.InternalStream.codec);
+                    
+                    // Adds the created stream to the list of streams
                     formatContext.streams.Add(mediaStream);
+                    
+                    // Finds the decoder for the stream
+                    IntPtr codecPointer = LibAVCodec.avcodec_find_decoder(mediaStream.CodecContext.InternalCodecContext.codec_id);
+                    if (codecPointer == IntPtr.Zero)
+                        continue;
+
+                    // Opens the codec for the stream
+                    if (LibAVCodec.avcodec_open2(mediaStream.InternalStream.codec, codecPointer, IntPtr.Zero) < 0)
+                        throw new InvalidOperationException("The codec {videoCodec.long_name} for the stream with the index {i} could not be opened.");
+
+                    // Creates the codec and returns it
+                    mediaStream.CodecContext.Codec = new Codec(codecPointer);
                 }
 
                 // Returns the created format context

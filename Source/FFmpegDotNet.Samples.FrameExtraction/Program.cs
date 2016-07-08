@@ -139,7 +139,7 @@ namespace FFmpegDotNet.Samples.FrameExtraction
                 // Frees the packet that was allocated by av_read_frame
                 LibAVCodec.av_free_packet(packetPointer);
             }
-            Console.WriteLine("Finihsed decoding of the video.");
+            Console.WriteLine("Finished decoding of the video.");
 
             // Frees and closes all acquired resources
             LibAVUtil.av_free(buffer);
