@@ -20,6 +20,13 @@ cd ffmpeg-dotnet/Intallation
 sudo bash InstallFFmpeg.sh
 ```
 
+Also, if you haven't installed the latest version of .NET Core, you can install it using the provided installation script:
+
+```batch
+cd ffmpeg-dotnet/Intallation
+sudo bash InstallDotNetCore.sh
+```
+
 After that, you can just `dotnet restore` and `dotnet build` the projects. A basic sample is provided with the source code:
 
 ```batch
