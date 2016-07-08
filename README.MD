@@ -1,7 +1,8 @@
 # FFmpeg.NET
 
 A .NET Core wrapper around the native FFmpeg libraries. FFmpeg.NET is currently in an ***early*** stage of development and is definitely ***not*** production
-ready.
+ready. This project aims to be cross platform, but currently it has only been tested under Ubuntu 14.04 and Ubuntu 16.04. If you have managed to get FFmpeg.NET
+running under Windows or MacOS, I would greatly appreciate if you would share your experiences.
 
 ## Using the Project
 
