@@ -1,9 +1,9 @@
 
 #region Using Directives
 
+using FFmpegDotNet.Interop.Utilities;
 using System;
 using System.Runtime.InteropServices;
-using FFmpegDotNet.Interop.Utilities;
 
 #endregion
 
