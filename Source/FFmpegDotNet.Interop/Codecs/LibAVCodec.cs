@@ -113,6 +113,59 @@ namespace FFmpegDotNet.Interop.Codecs
         [DllImport(Libraries.AVCodec)]
         public static extern int avcodec_decode_video2(IntPtr avctx, IntPtr picture, ref int got_picture_ptr, IntPtr avpkt);
 
+        /// <summary>
+        /// Gets the PKT timebase.
+        /// </summary>
+        /// <param name="avctx">The codec context for which the PKT timebase is to be retrieved.</param>
+        /// <returns>Returns the PKT timebase as a fraction.</returns>
+        [DllImport(Libraries.AVCodec)]
+        public static extern AVRational av_codec_get_pkt_timebase(IntPtr avctx);
+
+        /// <summary>
+        /// Sets the PKT timebase.
+        /// </summary>
+        /// <param name="*avctx">The codec context for which the PKT timebase is to be set.</param>
+        /// <param name="val">The new value that is to be set.</param>
+        [DllImport(Libraries.AVCodec)]
+        public static extern void av_codec_set_pkt_timebase(IntPtr avctx, AVRational val);
+
+        /// <summary>
+        /// Gets the codec descriptor for the specified codec context.
+        /// </summary>
+        /// <param name="avctx">The codec context for which the codec descriptor is to be retrieved.</param>
+        /// <returns>Returns a poitner to the codec descriptor.</returns>
+        [DllImport(Libraries.AVCodec)]
+        public static extern IntPtr av_codec_get_codec_descriptor(IntPtr avctx);
+
+        /// <summary>
+        /// Sets the codec descriptor for the specified codec context.
+        /// </summary>
+        /// <param name="avctx">The codec context for which the codec descriptor is to be set.</param>
+        /// <param name="*desc">The codec descriptor that is to be set.</param>
+        [DllImport(Libraries.AVCodec)]
+        public static extern void av_codec_set_codec_descriptor(IntPtr avctx, IntPtr desc);
+
+        [DllImport(Libraries.AVCodec)]
+        unsigned av_codec_get_codec_properties(const AVCodecContext *avctx);
+
+        [DllImport(Libraries.AVCodec)]
+        public static extern int av_codec_get_lowres(const AVCodecContext *avctx);
+
+        [DllImport(Libraries.AVCodec)]
+        public static extern void av_codec_set_lowres(AVCodecContext *avctx, int val);
+
+        [DllImport(Libraries.AVCodec)]
+        public static extern int av_codec_get_seek_preroll(const AVCodecContext *avctx);
+
+        [DllImport(Libraries.AVCodec)]
+        public static extern void av_codec_set_seek_preroll(AVCodecContext *avctx, int val);
+
+        [DllImport(Libraries.AVCodec)]
+        public static extern uint16_t *av_codec_get_chroma_intra_matrix(const AVCodecContext *avctx);
+
+        [DllImport(Libraries.AVCodec)]
+        public static extern void av_codec_set_chroma_intra_matrix(AVCodecContext *avctx, uint16_t *val);
+
         #endregion 
     }
 }
