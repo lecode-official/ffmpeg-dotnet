@@ -146,25 +146,25 @@ namespace FFmpegDotNet.Interop.Codecs
         public static extern void av_codec_set_codec_descriptor(IntPtr avctx, IntPtr desc);
 
         [DllImport(Libraries.AVCodec)]
-        unsigned av_codec_get_codec_properties(const AVCodecContext *avctx);
+        public static extern uint av_codec_get_codec_properties(IntPtr avctx);
 
         [DllImport(Libraries.AVCodec)]
-        public static extern int av_codec_get_lowres(const AVCodecContext *avctx);
+        public static extern int av_codec_get_lowres(IntPtr avctx);
 
         [DllImport(Libraries.AVCodec)]
-        public static extern void av_codec_set_lowres(AVCodecContext *avctx, int val);
+        public static extern void av_codec_set_lowres(IntPtr avctx, int val);
 
         [DllImport(Libraries.AVCodec)]
-        public static extern int av_codec_get_seek_preroll(const AVCodecContext *avctx);
+        public static extern int av_codec_get_seek_preroll(IntPtr avctx);
 
         [DllImport(Libraries.AVCodec)]
-        public static extern void av_codec_set_seek_preroll(AVCodecContext *avctx, int val);
+        public static extern void av_codec_set_seek_preroll(IntPtr avctx, int val);
 
         [DllImport(Libraries.AVCodec)]
-        public static extern uint16_t *av_codec_get_chroma_intra_matrix(const AVCodecContext *avctx);
+        public static extern IntPtr av_codec_get_chroma_intra_matrix(IntPtr avctx);
 
         [DllImport(Libraries.AVCodec)]
-        public static extern void av_codec_set_chroma_intra_matrix(AVCodecContext *avctx, uint16_t *val);
+        public static extern void av_codec_set_chroma_intra_matrix(IntPtr avctx, IntPtr val);
 
         #endregion 
     }
