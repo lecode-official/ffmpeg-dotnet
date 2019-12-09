@@ -16,14 +16,14 @@ Before using FFmpeg.NET, you need to install the latest version of FFmpeg. The s
 everything for you:
 
 ```batch
-cd ffmpeg-dotnet/Intallation
+cd ffmpeg-dotnet/Installation
 sudo bash InstallFFmpeg.sh
 ```
 
 Also, if you haven't installed the latest version of .NET Core, you can install it using the provided installation script:
 
 ```batch
-cd ffmpeg-dotnet/Intallation
+cd ffmpeg-dotnet/Installation
 sudo bash InstallDotNetCore.sh
 ```
 
